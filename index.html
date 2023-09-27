@@ -15,26 +15,28 @@
     <!--viewport para designers responsivos (mobo), content é a configuração-->
     <link rel="icon" href="favicon.ico">
     
-    <script type="module" src="js/main.js"></script>
-    <script type="module" src="js/db.js"></script>
+  
 </head>
 
 <body class="fullscreen">
     <div class="container">
-        <h1 class="title">Minhas Anotações</h1>
+        <h1 class="title">Minhas Anotações</h1><br/>
         <div style="text-align: center;">
             <img src="/images/capibaraNotes.png" alt="pwa" width="256" height="256">
-        </div>
+        </div><br/>
 
         <div id="entrada">
-            <input type="text" id="titulo" placeholder="Titulo">
-            <textarea id="descricao" cols="30" rows="10" placeholder="Descrição"></textarea>
-            <input type="date" id="data">
-            <button id="btnCadastro">Cadastrar</button>
-            <button id="btnCarregar">Carregar Minhas Anotações</button>
-        </div>
-        <div id="resultados"></div>
+            <input type="text" id="titulo" placeholder="Titulo"><br/>
+            <textarea id="descricao" cols="30" rows="10" placeholder="Descrição"></textarea><br/>
+            <input type="date" id="data"><br/>
+            <button id="btnCadastro">Cadastrar</button><br/>
+            <button id="btnCarregar">Carregar Minhas Anotações</button><br/>
+        </div><br/>
+        <div id="resultados"></div><br/>
     </div>
+
+    <script type="module" src="./js/db.js"></script>
+    <script type="module" src="./js/main.js"></script>
 </body>
 
 </html>
