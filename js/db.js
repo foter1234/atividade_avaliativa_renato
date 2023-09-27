@@ -24,8 +24,13 @@ async function criarDB(){
 
 window.addEventListener('DOMContentLoaded', async event =>{
     criarDB();
+
     document.getElementById('btnBuscar').addEventListener('click', buscarAnotacao);
-    document.getElementById('btnCadastro').addEventListener('click', adicionarAnotacao);
+    const resultados = await buscarAnotacao();
+        const resultadoPesquisa = document.getElementById("resultadoPesquisa");
+        resultadoPesquisa.innerHTML = resultados.length > 0 ? resultados.join('') : 'nenhuma anotação encontrada escreva novamente';
+    
+        document.getElementById('btnCadastro').addEventListener('click', adicionarAnotacao);
     document.getElementById('btnCarregar').addEventListener('click', buscarTodasAnotacoes);
 });
 
@@ -89,23 +94,35 @@ async function deletarAnotacao(titulo) {
 }
 
 
-async function buscarAnotacao() {
-    let titulo = document.getElementById("titulo").value;
-    let descricao = document.getElementById("descricao").value;
-    let data = document.getElementById("data").value;
-    const tx = await db.transaction('anotacao', 'readwrite')
-    const store = tx.objectStore('anotacao');
+    async function buscarAnotacao() {
+     const buscar = document.getElementById('buscaespecifica');
+     const tx = await db.transaction('anotacao', 'readonly');
+     const store = tx.objectStore('anotacao');
+     const anotacoess = await store.getAll();
+     const filtro = anotacoess.filter(anotacoess => anotacoess.titulo == buscar)
+     
+     try {
 
-    try {
-        await store.add({ titulo: titulo, descricao: descricao, data: data });
-        await tx.done;
-        limparCampos();
-        console.log('Registro adicionado com sucesso!');
-    } catch (error) {
-        console.error('Erro ao adicionar registro:', error);
+        if(anotacoess){
+            const filtros = filtro.map(anotacao => {
+                return `<div class="item2">
+                        <p>Anotação</p>
+                        <p>${anotacao.titulo} - ${anotacao.data} </p>
+                        <p>${anotacao.descricao}</p>
+                       </div>`;
+            });
+            return resultados
+    
+ 
+        }
+
+        
+      } catch (error) {
+        console.error('Erro ao consultar dados:', error);
         tx.abort();
+      }
+       
     }
-}
 
 function limparCampos() {
     document.getElementById("titulo").value = '';
@@ -117,3 +134,4 @@ function listagem(text){
     document.getElementById('resultados').innerHTML = text;
  
 }
+
