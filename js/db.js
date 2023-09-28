@@ -38,9 +38,11 @@ async function buscarTodasAnotacoes(){
     if(anotacoes){
         const divLista = anotacoes.map(anotacao => {
             return `<div class="item">
+         
                     <p>Anotação</p>
                     <p>${anotacao.titulo} - ${anotacao.data} </p>
                     <p>${anotacao.descricao}</p>
+                    <p>${anotacao.categoria}</p>
                     <button class="deletar">excluir</button>
                     <button class="editar" titulo="${anotacao.titulo}">Editar</button>
                    </div>`;
@@ -48,21 +50,24 @@ async function buscarTodasAnotacoes(){
         listagem(divLista.join(' '));
 
         const deletar = document.querySelectorAll(".deletar");
-        deletar.forEach((deletar, index) => {
+            deletar.forEach((deletar, index) => {
             deletar.addEventListener("click", () => deletarAnotacao(anotacoes[index].titulo));
         });
 
-        const editarButtons = document.querySelectorAll(".editar");
-        editarButtons.forEach(editarButton => {
-            editarButton.addEventListener("click", (event) => {
+                const editar = document.querySelectorAll(".editar");
+                editar.forEach(edita => {
+                edita.addEventListener("click", (event) => {
                 const titulo = event.target.getAttribute("titulo");
                 editarAnotacao(titulo, anotacoes);
+
             });
         });     
     
     }
 }
+
 function editarAnotacao(titulo, anotacoes) {
+
     const anotacao = anotacoes.find(a => a.titulo === titulo);
 
     const formulario = document.createElement('div');
@@ -70,8 +75,10 @@ function editarAnotacao(titulo, anotacoes) {
         <h2 value=${anotacao.titulo}>Editar Anotação de ${anotacao.titulo}</h2>
         <textarea id="novaDescricao" cols="30" rows="10" placeholder="Nova Descrição">${anotacao.descricao}</textarea><br/>
         <input type="date" id="novaData" value="${anotacao.data}"><br/>
+        <input type="text" id="novaCategoria" value="${anotacao.categoria}"><br/>
         <button id="btnSalvar">Salvar</button>
-    `;
+    
+        `;
 
     const btnSalvar = formulario.querySelector('#btnSalvar');
     btnSalvar.addEventListener('click', () => salvarAnotacao(titulo));
@@ -93,9 +100,11 @@ async function salvarAnotacao(titulo) {
     
     const novaDescricao = document.getElementById('novaDescricao').value;
     const novaData = document.getElementById('novaData').value;
+    const novaCategoria = document.getElementById('novaCategoria').value;
 
     anotacao.descricao = novaDescricao;
     anotacao.data = novaData;
+    anotacao.categoria = novaCategoria;
 
 
     await store.put(anotacao);
@@ -112,10 +121,11 @@ async function adicionarAnotacao() {
     let titulo = document.getElementById("titulo").value;
     let descricao = document.getElementById("descricao").value;
     let data = document.getElementById("data").value;
+    let categoria = document.getElementById("categoria").value;
     const tx = await db.transaction('anotacao', 'readwrite')
     const store = tx.objectStore('anotacao');
     try {
-        await store.add({ titulo: titulo, descricao: descricao, data: data });
+        await store.add({ titulo: titulo, descricao: descricao, data: data, categoria:categoria });
         await tx.done;
         limparCampos();
         console.log('Registro adicionado com sucesso!');
@@ -145,6 +155,7 @@ function limparCampos() {
     document.getElementById("titulo").value = '';
     document.getElementById("descricao").value = '';
     document.getElementById("data").value = '';
+    document.getElementById("categoria").value = '';
 }
 
 function listagem(text){
