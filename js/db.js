@@ -23,14 +23,8 @@ async function criarDB(){
 }
 
 window.addEventListener('DOMContentLoaded', async event =>{
-    criarDB();
-
-    document.getElementById('btnBuscar').addEventListener('click', buscarAnotacao);
-    const resultados = await buscarAnotacao();
-        const resultadoPesquisa = document.getElementById("resultadoPesquisa");
-        resultadoPesquisa.innerHTML = resultados.length > 0 ? resultados.join('') : 'nenhuma anotação encontrada escreva novamente';
-    
-        document.getElementById('btnCadastro').addEventListener('click', adicionarAnotacao);
+    await criarDB();
+    document.getElementById('btnCadastro').addEventListener('click', adicionarAnotacao);
     document.getElementById('btnCarregar').addEventListener('click', buscarTodasAnotacoes);
 });
 
@@ -48,6 +42,7 @@ async function buscarTodasAnotacoes(){
                     <p>${anotacao.titulo} - ${anotacao.data} </p>
                     <p>${anotacao.descricao}</p>
                     <button class="deletar">excluir</button>
+                    <button class="editar" titulo="${anotacao.titulo}">Editar</button>
                    </div>`;
         });
         listagem(divLista.join(' '));
@@ -56,8 +51,61 @@ async function buscarTodasAnotacoes(){
         deletar.forEach((deletar, index) => {
             deletar.addEventListener("click", () => deletarAnotacao(anotacoes[index].titulo));
         });
+
+        const editarButtons = document.querySelectorAll(".editar");
+        editarButtons.forEach(editarButton => {
+            editarButton.addEventListener("click", (event) => {
+                const titulo = event.target.getAttribute("titulo");
+                editarAnotacao(titulo, anotacoes);
+            });
+        });     
+    
     }
 }
+function editarAnotacao(titulo, anotacoes) {
+    const anotacao = anotacoes.find(a => a.titulo === titulo);
+
+    const formulario = document.createElement('div');
+    formulario.innerHTML = `
+        <h2 value=${anotacao.titulo}>Editar Anotação de ${anotacao.titulo}</h2>
+        <textarea id="novaDescricao" cols="30" rows="10" placeholder="Nova Descrição">${anotacao.descricao}</textarea><br/>
+        <input type="date" id="novaData" value="${anotacao.data}"><br/>
+        <button id="btnSalvar">Salvar</button>
+    `;
+
+    const btnSalvar = formulario.querySelector('#btnSalvar');
+    btnSalvar.addEventListener('click', () => salvarAnotacao(titulo));
+
+    document.getElementById('resultados').innerHTML = '';
+    document.getElementById('resultados').appendChild(formulario);
+
+}
+
+
+
+async function salvarAnotacao(titulo) {
+
+    const tx = await db.transaction('anotacao', 'readwrite');
+    const store = await tx.objectStore('anotacao');
+    const anotacao = await store.get(titulo);
+    
+
+    
+    const novaDescricao = document.getElementById('novaDescricao').value;
+    const novaData = document.getElementById('novaData').value;
+
+    anotacao.descricao = novaDescricao;
+    anotacao.data = novaData;
+
+
+    await store.put(anotacao);
+    await tx.done;
+  
+    document.getElementById('resultados').innerHTML = '';
+
+}
+
+
 
 async function adicionarAnotacao() {
 
@@ -93,37 +141,6 @@ async function deletarAnotacao(titulo) {
     }
 }
 
-
-    async function buscarAnotacao() {
-     const buscar = document.getElementById('buscaespecifica');
-     const tx = await db.transaction('anotacao', 'readonly');
-     const store = tx.objectStore('anotacao');
-     const anotacoess = await store.getAll();
-     const filtro = anotacoess.filter(anotacoess => anotacoess.titulo == buscar)
-     
-     try {
-
-        if(anotacoess){
-            const filtros = filtro.map(anotacao => {
-                return `<div class="item2">
-                        <p>Anotação</p>
-                        <p>${anotacao.titulo} - ${anotacao.data} </p>
-                        <p>${anotacao.descricao}</p>
-                       </div>`;
-            });
-            return resultados
-    
- 
-        }
-
-        
-      } catch (error) {
-        console.error('Erro ao consultar dados:', error);
-        tx.abort();
-      }
-       
-    }
-
 function limparCampos() {
     document.getElementById("titulo").value = '';
     document.getElementById("descricao").value = '';
@@ -134,4 +151,6 @@ function listagem(text){
     document.getElementById('resultados').innerHTML = text;
  
 }
+
+
 
