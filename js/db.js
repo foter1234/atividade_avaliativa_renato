@@ -1,5 +1,5 @@
 import { openDB } from "idb";
-import '../css/style.css'
+
 
 let db;
 async function criarDB(){
@@ -40,13 +40,14 @@ async function buscarTodasAnotacoes(){
         const divLista = anotacoes.map(anotacao => {
             return `<div class="item">
          
-                    <p>Anotação</p>
-                    <p>${anotacao.titulo} - ${anotacao.data} </p>
-                    <p>${anotacao.descricao}</p>
-                    <p>${anotacao.categoria}</p>
+                    <h2>Anotação</h2>
+                    <p>titulo:${anotacao.titulo}</p>
+                    <p>data:${anotacao.data}</p>
+                    <p>descrição:${anotacao.descricao}</p>
+                    <p>categoria:${anotacao.categoria}</p>
                     <button class="deletar">excluir</button>
                     <button class="editar" titulo="${anotacao.titulo}">Editar</button>
-                   </div>`;
+                   </div><br/><br/><br/>`;
         });
         listagem(divLista.join(' '));
 
@@ -72,6 +73,7 @@ function editarAnotacao(titulo, anotacoes) {
     const anotacao = anotacoes.find(a => a.titulo === titulo);
 
     const formulario = document.createElement('div');
+    
     formulario.innerHTML = `
         <div class="form">
         <h2 value=${anotacao.titulo}>Editar Anotação de ${anotacao.titulo}</h2>
