@@ -1,4 +1,5 @@
 import { openDB } from "idb";
+import '../css/style.css'
 
 let db;
 async function criarDB(){
@@ -49,7 +50,7 @@ async function buscarTodasAnotacoes(){
         });
         listagem(divLista.join(' '));
 
-        const deletar = document.querySelectorAll(".deletar");
+            const deletar = document.querySelectorAll(".deletar");
             deletar.forEach((deletar, index) => {
             deletar.addEventListener("click", () => deletarAnotacao(anotacoes[index].titulo));
         });
@@ -72,12 +73,13 @@ function editarAnotacao(titulo, anotacoes) {
 
     const formulario = document.createElement('div');
     formulario.innerHTML = `
+        <div class="form">
         <h2 value=${anotacao.titulo}>Editar Anotação de ${anotacao.titulo}</h2>
         <textarea id="novaDescricao" cols="30" rows="10" placeholder="Nova Descrição">${anotacao.descricao}</textarea><br/>
         <input type="date" id="novaData" value="${anotacao.data}"><br/>
         <input type="text" id="novaCategoria" value="${anotacao.categoria}"><br/>
         <button id="btnSalvar">Salvar</button>
-    
+        </div>
         `;
 
     const btnSalvar = formulario.querySelector('#btnSalvar');

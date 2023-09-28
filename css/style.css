@@ -1,0 +1,98 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #242424;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #807676;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+}
+
+#entrada {
+    text-align: center;
+}
+
+  
+input  {
+    width: 50%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.form{
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #d1afaf;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+}
+#btnSalvar {
+    background-color: #969696;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btnCadastro,
+#btnCarregar,
+#btnDeletar {
+    background-color: #969696;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#resultados {
+    text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .title {
+        font-size: 20px;
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    input  {
+        padding: 8px;
+    }
+    
+    #btnCadastro,
+    #btnCarregar,
+    #btnDeletar {
+        padding: 8px 16px;
+    }
+}
