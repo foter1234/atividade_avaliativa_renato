@@ -116,3 +116,23 @@ input  {
         padding: 8px 16px;
     }
 }
+
+.offline {
+    text-align: center;
+    margin: 100px auto;
+    width: 80%;
+    max-width: 400px;
+  }
+  
+
+  .offline h1 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .offline p {
+    font-size: 16px;
+    color: #666;
+    margin-top: 10px;
+  }
+  
