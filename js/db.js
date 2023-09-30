@@ -27,6 +27,13 @@ window.addEventListener('DOMContentLoaded', async event =>{
     await criarDB();
     document.getElementById('btnCadastro').addEventListener('click', adicionarAnotacao);
     document.getElementById('btnCarregar').addEventListener('click', buscarTodasAnotacoes);
+     
+    document.getElementById('btnBuscar').addEventListener('click', () => {
+        const busca = document.getElementById('buscas').value;
+            buscarAnotacaoPorTitulo(busca);
+       
+    });
+    
 });
 
 async function buscarTodasAnotacoes(){
@@ -66,6 +73,39 @@ async function buscarTodasAnotacoes(){
         });     
     
     }
+}
+async function buscarAnotacaoPorTitulo(titulo) {
+
+    const tx = await db.transaction('anotacao', 'readonly');
+    const store = await tx.objectStore('anotacao');
+    const anotacao = await store.get(titulo);
+
+    const resultados = document.getElementById('resultados');
+    resultados.innerHTML = '';
+
+    if (anotacao) {
+       
+        const listagem = document.createElement("div")
+        listagem.innerHTML= `<div class="item">
+         
+        <h2>Anotação</h2>
+        <p>titulo:${anotacao.titulo}</p>
+        <p>data:${anotacao.data}</p>
+        <p>descrição:${anotacao.descricao}</p>
+        <p>categoria:${anotacao.categoria}</p>
+        <button class="deletar">excluir</button>
+        <button class="editar" titulo="${anotacao.titulo}">Editar</button>
+       </div><br/><br/><br/>`
+        resultados.appendChild(listagem);
+    } else {
+        const mensagem = document.createElement('div');
+        mensagem.innerHTML= `
+        <p>Nenhum resultado encontrado.</p>`
+        resultados.appendChild(mensagem);
+    }
+
+
+
 }
 
 function editarAnotacao(titulo, anotacoes) {
