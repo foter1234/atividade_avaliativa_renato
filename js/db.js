@@ -58,11 +58,17 @@ async function buscarTodasAnotacoes(){
         });
         listagem(divLista.join(' '));
 
-            const deletar = document.querySelectorAll(".deletar");
-            deletar.forEach((deletar, index) => {
-            deletar.addEventListener("click", () => deletarAnotacao(anotacoes[index].titulo));
-        });
 
+            const deletar = document.querySelectorAll(".deletar");  
+            deletar.forEach((deleta, index) => {
+            deleta.addEventListener("click", function() {
+            deletarAnotacao(anotacoes[index].titulo);
+            })
+        })
+
+            
+           
+    
                 const editar = document.querySelectorAll(".editar");
                 editar.forEach(edita => {
                 edita.addEventListener("click", (event) => {
@@ -93,8 +99,6 @@ async function buscarAnotacaoPorTitulo(titulo) {
         <p>data:${anotacao.data}</p>
         <p>descrição:${anotacao.descricao}</p>
         <p>categoria:${anotacao.categoria}</p>
-        <button class="deletar">excluir</button>
-        <button class="editar" titulo="${anotacao.titulo}">Editar</button>
        </div><br/><br/><br/>`
         resultados.appendChild(listagem);
     } else {
@@ -120,12 +124,12 @@ function editarAnotacao(titulo, anotacoes) {
         <textarea id="novaDescricao" cols="30" rows="10" placeholder="Nova Descrição">${anotacao.descricao}</textarea><br/>
         <input type="date" id="novaData" value="${anotacao.data}"><br/>
         <input type="text" id="novaCategoria" value="${anotacao.categoria}"><br/>
-        <button id="btnSalvar">Salvar</button>
+        <button id="salvar">Salvar</button>
         </div>
         `;
 
-    const btnSalvar = formulario.querySelector('#btnSalvar');
-    btnSalvar.addEventListener('click', () => salvarAnotacao(titulo));
+    const salvar = formulario.querySelector('#salvar');
+    salvar.addEventListener('click', () => salvarAnotacao(titulo));
 
     document.getElementById('resultados').innerHTML = '';
     document.getElementById('resultados').appendChild(formulario);
